@@ -22,4 +22,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/lottie/
+    - assets/image/
+    - assets/icon/
 

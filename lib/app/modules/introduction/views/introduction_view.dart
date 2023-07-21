@@ -1,3 +1,4 @@
+import 'package:alquran/app/constant/color.dart';
 import 'package:alquran/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class IntroductionView extends GetView<IntroductionController> {
               child: Lottie.asset("assets/lottie/introduction.json")),
           Text(
             "Al-Qur'an",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
           ),
           SizedBox(
             height: 10,
@@ -42,6 +43,10 @@ class IntroductionView extends GetView<IntroductionController> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               child: Text("Mulai"),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Get.isDarkMode ? appWhite : appPurple,
+              backgroundColor: appPurple,
             ),
           ),
         ],
