@@ -13,14 +13,30 @@ const appWhite2 = Color(0xFFD2BEE8);
 const appOrange = Color(0xFFF6704A);
 
 ThemeData themeLight = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: appPurple,
-    scaffoldBackgroundColor: appWhite1,
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      backgroundColor: appWhite,
+  brightness: Brightness.light,
+  primaryColor: appPurple,
+  scaffoldBackgroundColor: appWhite1,
+  appBarTheme: AppBarTheme(
+    elevation: 0,
+    backgroundColor: appWhite,
+    foregroundColor: appPurple,
+  ),
+  textTheme: TextTheme(
+    bodyMedium: TextStyle(color: appPurpleDark),
+  ),
+  listTileTheme: ListTileThemeData(
+    textColor: appPurpleDark,
+  ),
+  tabBarTheme: TabBarTheme(
+    indicator: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(width: 2, color: appPurple),
+      ),
     ),
-    textTheme: TextTheme(bodyMedium: TextStyle(color: appDark2)));
+    labelColor: appPurple,
+    unselectedLabelColor: appPurpleLight2,
+  ),
+);
 
 ThemeData themeDark = ThemeData(
   brightness: Brightness.dark,
@@ -34,5 +50,17 @@ ThemeData themeDark = ThemeData(
       color: appWhite,
     ),
     bodyMedium: TextStyle(color: appWhite),
+  ),
+  listTileTheme: ListTileThemeData(
+    textColor: appWhite,
+  ),
+  tabBarTheme: TabBarTheme(
+    indicator: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(width: 2, color: appWhite),
+      ),
+    ),
+    labelColor: appWhite,
+    unselectedLabelColor: appWhite2,
   ),
 );

@@ -15,13 +15,13 @@ void main() {
 
   runApp(
     GetMaterialApp(
-      theme: themeLight,
+      theme: themeDark,
       themeMode: ThemeMode.light,
       darkTheme: themeDark,
       debugShowCheckedModeBanner: false,
       title: "Application",
       // initialRoute: AppPages.INITIAL,
-      initialRoute: Routes.HOME,
+      initialRoute: Routes.INTRODUCTION,
       getPages: AppPages.routes,
     ),
   );

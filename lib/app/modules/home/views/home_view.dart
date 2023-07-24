@@ -17,15 +17,17 @@ class HomeView extends GetView<HomeController> {
         title: Text(
           'Al Quran',
           style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Get.isDarkMode ? appWhite : appPurple),
+            fontWeight: FontWeight.w500,
+          ),
         ),
         // centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () => Get.toNamed(Routes.SEARCH),
-              icon: Icon(Icons.search,
-                  color: Get.isDarkMode ? appWhite : appPurpleLight1))
+            onPressed: () => Get.toNamed(Routes.SEARCH),
+            icon: Icon(
+              Icons.search,
+            ),
+          ),
         ],
         elevation: 0,
       ),
@@ -130,10 +132,6 @@ class HomeView extends GetView<HomeController> {
                 height: 20,
               ),
               TabBar(
-                indicatorColor: Get.isDarkMode ? appWhite : appPurple,
-                labelColor: Get.isDarkMode ? appWhite : appPurple,
-                unselectedLabelColor:
-                    Get.isDarkMode ? appWhite2 : appPurpleLight2,
                 tabs: [
                   Tab(text: "Surah"),
                   Tab(text: "Juz"),
@@ -182,18 +180,12 @@ class HomeView extends GetView<HomeController> {
                                 ),
                                 title: Text(
                                   "${surah.name?.transliteration.id ?? "Error"}",
-                                  style: TextStyle(
-                                      color: Get.isDarkMode
-                                          ? appWhite
-                                          : appPurpleDark,
-                                      fontWeight: FontWeight.w500),
+                                  style: TextStyle(fontWeight: FontWeight.w500),
                                 ),
                                 subtitle: Text(
                                   "${surah.numberOfVerses} ayat | ${surah.revelation.id}",
                                   style: TextStyle(
-                                      color: Get.isDarkMode
-                                          ? appWhite2
-                                          : appPurpleLight2,
+                                      color: appWhite2,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 trailing: Text(
@@ -230,9 +222,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                           title: Text(
                             "Juz ${index + 1}",
-                            style: TextStyle(
-                                color: appPurpleDark,
-                                fontWeight: FontWeight.w500),
+                            style: TextStyle(fontWeight: FontWeight.w500),
                           ),
                         );
                       },
@@ -246,6 +236,16 @@ class HomeView extends GetView<HomeController> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Get.isDarkMode ? appWhite : appPurpleDark,
+        onPressed: () {
+          Get.isDarkMode
+              ? Get.changeTheme(themeLight)
+              : Get.changeTheme(themeDark);
+        },
+        child: Icon(Icons.color_lens,
+            color: Get.isDarkMode ? appPurpleDark : appWhite),
       ),
     );
   }
