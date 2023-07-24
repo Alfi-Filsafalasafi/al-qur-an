@@ -36,31 +36,38 @@ ThemeData themeLight = ThemeData(
     labelColor: appPurple,
     unselectedLabelColor: appPurpleLight2,
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: appPurpleDark,
+    foregroundColor: appWhite,
+  ),
 );
 
 ThemeData themeDark = ThemeData(
-  brightness: Brightness.dark,
-  primaryColor: appPurpleLight2,
-  scaffoldBackgroundColor: appPurpleDark2,
-  appBarTheme: AppBarTheme(
-    backgroundColor: appPurpleDark2,
-  ),
-  textTheme: const TextTheme(
-    labelMedium: TextStyle(
-      color: appWhite,
+    brightness: Brightness.dark,
+    primaryColor: appPurpleLight2,
+    scaffoldBackgroundColor: appPurpleDark2,
+    appBarTheme: AppBarTheme(
+      backgroundColor: appPurpleDark2,
     ),
-    bodyMedium: TextStyle(color: appWhite),
-  ),
-  listTileTheme: ListTileThemeData(
-    textColor: appWhite,
-  ),
-  tabBarTheme: TabBarTheme(
-    indicator: BoxDecoration(
-      border: Border(
-        bottom: BorderSide(width: 2, color: appWhite),
+    textTheme: const TextTheme(
+      labelMedium: TextStyle(
+        color: appWhite,
       ),
+      bodyMedium: TextStyle(color: appWhite),
     ),
-    labelColor: appWhite,
-    unselectedLabelColor: appWhite2,
-  ),
-);
+    listTileTheme: ListTileThemeData(
+      textColor: appWhite,
+    ),
+    tabBarTheme: TabBarTheme(
+      indicator: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 2, color: appWhite),
+        ),
+      ),
+      labelColor: appWhite,
+      unselectedLabelColor: appWhite2,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: appWhite,
+      foregroundColor: appPurpleDark,
+    ));

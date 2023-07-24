@@ -1,3 +1,4 @@
+import 'package:alquran/app/constant/color.dart';
 import 'package:alquran/app/data/models/detailSurah.dart' as detail;
 import 'package:flutter/material.dart';
 
@@ -18,26 +19,50 @@ class DetailSurahView extends GetView<DetailSurahController> {
         body: ListView(
           padding: EdgeInsets.all(20),
           children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Text(
-                      "${surah.name.transliteration.id}",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      "(${surah.name.translation.id})",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                        "${surah.numberOfVerses} ayat | ${surah.revelation.id}")
-                  ],
+            GestureDetector(
+              onTap: () => Get.defaultDialog(
+                titlePadding: EdgeInsets.symmetric(vertical: 15),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                title: "Tafsir ${surah.name.transliteration.id}",
+                content: Text(
+                  "${surah.tafsir.id}",
+                  style: TextStyle(fontSize: 14),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(colors: [
+                      appPurpleLight2,
+                      appPurpleLight1,
+                    ])),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "${surah.name.transliteration.id}",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: appWhite),
+                      ),
+                      Text(
+                        "(${surah.name.translation.id})",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, color: appWhite),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "${surah.numberOfVerses} ayat | ${surah.revelation.id}",
+                        style: TextStyle(color: appWhite),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -70,15 +95,28 @@ class DetailSurahView extends GetView<DetailSurahController> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Card(
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: appPurpleLight2.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10)),
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CircleAvatar(
-                                      child: Text("${index + 1}"),
+                                    Container(
+                                      height: 35,
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: appPurple,
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                        "${index + 1}",
+                                        style: TextStyle(color: Colors.white),
+                                      )),
                                     ),
                                     Row(
                                       children: [
@@ -95,17 +133,23 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              height: 5,
+                            ),
                             Text(
                               "${ayat!.text.arab}",
                               textAlign: TextAlign.end,
                               style: TextStyle(fontSize: 25),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 5,
                             ),
-                            Text(
-                              "${ayat!.translation.id}",
-                              style: TextStyle(fontSize: 16),
+                            Container(
+                              width: Get.width,
+                              child: Text(
+                                "${ayat.translation.id}",
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
                             SizedBox(
                               height: 30,
