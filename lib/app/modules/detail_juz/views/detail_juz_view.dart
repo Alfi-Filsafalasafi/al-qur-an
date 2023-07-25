@@ -133,7 +133,38 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                   builder: (c) => Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Get.defaultDialog(
+                                              title: "Bookmark",
+                                              middleText:
+                                                  "Pilih Jenis Bookmark",
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    c.addBookmark(true, surah,
+                                                        verse, index);
+                                                  },
+                                                  child: Text(
+                                                    "Terakhir dibaca",
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: appPurple,
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    c.addBookmark(false, surah,
+                                                        verse, index);
+                                                  },
+                                                  child: Text("Bookmark"),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: appPurple,
+                                                  ),
+                                                ),
+                                              ]);
+                                        },
                                         icon: Icon(Icons.bookmark_add_outlined),
                                       ),
                                       (verse.kondisiAudio == "stop")

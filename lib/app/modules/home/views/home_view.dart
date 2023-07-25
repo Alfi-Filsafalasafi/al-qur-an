@@ -179,7 +179,7 @@ class HomeView extends GetView<HomeController> {
                                   )),
                                 ),
                                 title: Text(
-                                  "${surah.name?.transliteration.id ?? "Error"}",
+                                  "${surah.name.transliteration.id}",
                                   style: TextStyle(fontWeight: FontWeight.w500),
                                 ),
                                 subtitle: Text(
@@ -240,7 +240,10 @@ class HomeView extends GetView<HomeController> {
                                     ),
                                   ),
                                 ),
-                                title: Text("Juz ${index + 1}"),
+                                title: Text(
+                                  "Juz ${index + 1}",
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
                               );
                             },
                           );
@@ -314,9 +317,78 @@ class HomeView extends GetView<HomeController> {
                     //     );
                     //   },
                     // ),
-                    Center(
-                      child: Text("Page 3"),
-                    ),
+
+                    //merupakan page ketiga
+                    GetBuilder<HomeController>(
+                      builder: (c) {
+                        return FutureBuilder<List<Map<String, dynamic>>>(
+                          future: c.getBookmark(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            if (snapshot.data!.length == 0) {
+                              return Center(
+                                child: Text("Bookmark belum ada"),
+                              );
+                            }
+
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> data =
+                                    snapshot.data![index];
+                                return ListTile(
+                                  onTap: () {
+                                    print(index);
+                                  },
+                                  leading: Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/icon/listnumber.png"),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "${index + 1}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    "${data["surah"].toString().replaceAll("@", "'")}",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                  subtitle: Text(
+                                    "Ayat ${data['ayat']} | via ${data['via']}",
+                                    style: TextStyle(
+                                        color: appWhite2,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  trailing: IconButton(
+                                      onPressed: () {
+                                        c.deleteBookmark(data["id"]);
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: appPurple,
+                                      )),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    )
                   ],
                 ),
               ),

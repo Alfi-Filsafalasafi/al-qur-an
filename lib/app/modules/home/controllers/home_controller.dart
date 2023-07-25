@@ -1,17 +1,36 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:alquran/app/data/db/bookmark.dart';
 import 'package:alquran/app/data/models/detailSurah.dart';
 import 'package:alquran/app/data/models/surah.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../../constant/color.dart';
 
 class HomeController extends GetxController {
   List<Surah> allSurah = [];
+
+  DatabaseManager database = DatabaseManager.instance;
+
+  void deleteBookmark(int id) async {
+    Database db = await database.db;
+    await db.delete("bookmark", where: "id = $id");
+    update();
+    Get.snackbar("Berhasil", "Anda berhasil menghapus bookmark");
+  }
+
+  Future<List<Map<String, dynamic>>> getBookmark() async {
+    Database db = await database.db;
+    List<Map<String, dynamic>> allBookmark =
+        await db.query("bookmark", where: "last_read = 0");
+    // print(allBookmark);
+    return allBookmark;
+  }
 
   void changeTheme() {
     Get.isDarkMode ? Get.changeTheme(themeLight) : Get.changeTheme(themeDark);
@@ -71,7 +90,7 @@ class HomeController extends GetxController {
     List<Map<String, dynamic>> penampungAyat = [];
     List<Map<String, dynamic>> allJuz = [];
 
-    for (var i = 1; i <= 30; i++) {
+    for (var i = 1; i <= 10; i++) {
       // Omit the 'new' keyword when instantiating HttpClient
       HttpClient httpClient = HttpClient();
       httpClient.badCertificateCallback =
