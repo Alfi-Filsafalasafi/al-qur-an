@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
-import '../../../data/models/juz.dart' as juz;
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -202,50 +201,119 @@ class HomeView extends GetView<HomeController> {
                       },
                     ),
                     //ini merupakan page 2
-                    FutureBuilder<List<juz.Juz>>(
-                      future: controller.getAllJuz(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: Text("Tidak ada data"),
-                          );
-                        }
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            juz.Juz detailJuz = snapshot.data![index];
-                            return ListTile(
-                              onTap: () => Get.toNamed(Routes.DETAIL_JUZ,
-                                  arguments: detailJuz),
-                              leading: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/icon/listnumber.png"),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "${index + 10}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                              title: Text("Juz ${index + 10}"),
+                    FutureBuilder<List<Map<String, dynamic>>>(
+                        future: controller.getAllJuz(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
                             );
-                          },
-                        );
-                      },
-                    ),
+                          }
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: Text("Tidak ada data"),
+                            );
+                          }
+                          return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              Map<String, dynamic> dataMapPerJuz =
+                                  snapshot.data![index];
+                              return ListTile(
+                                onTap: () => Get.toNamed(Routes.DETAIL_JUZ,
+                                    arguments: dataMapPerJuz),
+                                leading: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/icon/listnumber.png"),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${index + 1}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ),
+                                title: Text("Juz ${index + 1}"),
+                              );
+                            },
+                          );
+                        }),
+                    // FutureBuilder<List<juz.Juz>>(
+                    //   future: controller.getAllJuz(),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return Center(
+                    //         child: CircularProgressIndicator(),
+                    //       );
+                    //     }
+                    //     if (!snapshot.hasData) {
+                    //       return Center(
+                    //         child: Text("Tidak ada data"),
+                    //       );
+                    //     }
+                    //     return ListView.builder(
+                    //       itemCount: snapshot.data!.length,
+                    //       itemBuilder: (context, index) {
+                    //         juz.Juz detailJuz = snapshot.data![index];
+                    //         String nameStart =
+                    //             detailJuz.juzStartInfo?.split(" - ").first ??
+                    //                 "";
+                    //         String nameEnd =
+                    //             detailJuz.juzEndInfo?.split(" - ").first ?? "";
+
+                    //         List<Surah> rawAllSurahInJuz = [];
+                    //         List<Surah> allSurahInJuz = [];
+
+                    //         for (Surah item in controller.allSurah) {
+                    //           rawAllSurahInJuz.add(item);
+                    //           if (item.name.transliteration.id == nameEnd) {
+                    //             break;
+                    //           }
+                    //         }
+                    //         for (Surah item
+                    //             in rawAllSurahInJuz.reversed.toList()) {
+                    //           allSurahInJuz.add(item);
+                    //           if (item.name.transliteration.id == nameStart) {
+                    //             break;
+                    //           }
+                    //         }
+                    //         return ListTile(
+                    //           onTap: () =>
+                    //               Get.toNamed(Routes.DETAIL_JUZ, arguments: {
+                    //             "juz": detailJuz,
+                    //             "surah": allSurahInJuz.reversed.toList(),
+                    //           }),
+                    //           leading: Container(
+                    //             width: 40,
+                    //             height: 40,
+                    //             decoration: BoxDecoration(
+                    //               image: DecorationImage(
+                    //                 image: AssetImage(
+                    //                     "assets/icon/listnumber.png"),
+                    //               ),
+                    //             ),
+                    //             child: Center(
+                    //               child: Text(
+                    //                 "${index + 1}",
+                    //                 style:
+                    //                     TextStyle(fontWeight: FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           title: Text("Juz ${index + 1}"),
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    // ),
                     Center(
                       child: Text("Page 3"),
                     ),
@@ -257,11 +325,7 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.isDarkMode
-              ? Get.changeTheme(themeLight)
-              : Get.changeTheme(themeDark);
-        },
+        onPressed: () => controller.changeTheme(),
         child: Icon(
           Icons.color_lens,
         ),

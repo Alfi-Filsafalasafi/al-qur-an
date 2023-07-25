@@ -28,7 +28,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.INTRODUCTION,
-      page: () => const IntroductionView(),
+      page: () => IntroductionView(),
       binding: IntroductionBinding(),
     ),
     GetPage(

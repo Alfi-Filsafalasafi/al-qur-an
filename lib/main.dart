@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
   // Memastikan binding telah diinisialisasi sebelum pemanggilan fungsi lainnya
   WidgetsFlutterBinding.ensureInitialized();
-
   // Atur tema status bar sebelum runApp()
   setStatusBarTheme();
 
+  await GetStorage.init();
+
+  final box = GetStorage();
+
   runApp(
     GetMaterialApp(
-      theme: themeDark,
+      theme: box.read("themeDark") == null ? themeLight : themeDark,
       themeMode: ThemeMode.light,
       darkTheme: themeDark,
       debugShowCheckedModeBanner: false,
