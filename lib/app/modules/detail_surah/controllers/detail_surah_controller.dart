@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:alquran/app/data/db/bookmark.dart';
 import 'package:alquran/app/data/models/detailSurah.dart';
+import 'package:alquran/app/modules/home/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +17,7 @@ class DetailSurahController extends GetxController {
 
   DatabaseManager database = DatabaseManager.instance;
 
-  void addBookmark(
+  Future<void> addBookmark(
       bool lastRead, DetailSurah surah, Verse ayat, int indexAyat) async {
     Database db = await database.db;
 
@@ -43,7 +44,7 @@ class DetailSurahController extends GetxController {
         "last_read": lastRead == true ? 1 : 0,
       });
 
-      Get.back(); //tutup getDialog
+      Get.back(); //tutup getDialog\
       Get.snackbar("Berhasil", "Berhasil menambahkan bookmark");
     } else {
       Get.back(); //tutup getDialog

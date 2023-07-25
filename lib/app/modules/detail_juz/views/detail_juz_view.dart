@@ -1,5 +1,6 @@
 // import 'package:alquran/app/data/models/ayat.dart' as surah;
 // import 'package:alquran/app/data/models/juz.dart' as juz;
+import 'package:alquran/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../controllers/detail_juz_controller.dart';
 
 class DetailJuzView extends GetView<DetailJuzController> {
   final Map<String, dynamic> dataMapPerJuz = Get.arguments;
+  final homeC = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,9 +142,10 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                                   "Pilih Jenis Bookmark",
                                               actions: [
                                                 ElevatedButton(
-                                                  onPressed: () {
-                                                    c.addBookmark(true, surah,
-                                                        verse, index);
+                                                  onPressed: () async {
+                                                    await c.addBookmark(true,
+                                                        surah, verse, index);
+                                                    homeC.update();
                                                   },
                                                   child: Text(
                                                     "Terakhir dibaca",

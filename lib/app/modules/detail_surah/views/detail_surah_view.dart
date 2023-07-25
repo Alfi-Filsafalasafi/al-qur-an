@@ -1,5 +1,6 @@
 import 'package:alquran/app/constant/color.dart';
 import 'package:alquran/app/data/models/detailSurah.dart' as detail;
+import 'package:alquran/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import '../controllers/detail_surah_controller.dart';
 
 class DetailSurahView extends GetView<DetailSurahController> {
   final Surah surah = Get.arguments;
+  final homeC = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,12 +131,13 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                       "Pilih Jenis Bookmark",
                                                   actions: [
                                                     ElevatedButton(
-                                                      onPressed: () {
-                                                        c.addBookmark(
+                                                      onPressed: () async {
+                                                        await c.addBookmark(
                                                             true,
                                                             snapshot.data!,
                                                             ayat!,
                                                             index);
+                                                        homeC.update();
                                                       },
                                                       child: Text(
                                                         "Terakhir dibaca",
@@ -146,8 +149,8 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                       ),
                                                     ),
                                                     ElevatedButton(
-                                                      onPressed: () {
-                                                        c.addBookmark(
+                                                      onPressed: () async {
+                                                        await c.addBookmark(
                                                             false,
                                                             snapshot.data!,
                                                             ayat!,

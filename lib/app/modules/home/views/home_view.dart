@@ -46,86 +46,195 @@ class HomeView extends GetView<HomeController> {
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 20),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                    colors: [
-                      appPurpleLight2,
-                      appPurpleLight1,
-                    ],
-                  ),
-                ),
-                child: Material(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () => Get.toNamed(Routes.LAST_READ),
-                    child: Container(
-                      height: 150,
-                      width: Get.width,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: -50,
-                            right: 0,
-                            child: Opacity(
-                              opacity: 0.8,
-                              child: Container(
-                                  width: 160,
-                                  height: 160,
-                                  child:
-                                      Image.asset("assets/image/alquran.png")),
-                            ),
+              GetBuilder<HomeController>(
+                builder: (c) => FutureBuilder<Map<String, dynamic>?>(
+                  future: c.getLastRead(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            colors: [
+                              appPurpleLight2,
+                              appPurpleLight1,
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              bottom: -50,
+                              right: 0,
+                              child: Opacity(
+                                opacity: 0.8,
+                                child: Container(
+                                    width: 160,
+                                    height: 160,
+                                    child: Image.asset(
+                                        "assets/image/alquran.png")),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.menu_book_rounded,
+                                        color: appWhite1,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Terakhir di baca",
+                                        style: TextStyle(color: appWhite1),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Text(
+                                    "Loading",
+                                    style: TextStyle(
+                                        color: appWhite1,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "",
+                                    style: TextStyle(
+                                        color: appWhite1,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 16),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+
+                    Map<String, dynamic>? lastRead = snapshot.data;
+
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          colors: [
+                            appPurpleLight2,
+                            appPurpleLight1,
+                          ],
+                        ),
+                      ),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onLongPress: () {
+                            if (lastRead != null) {
+                              Get.defaultDialog(
+                                  title: "Menghapus Data Last Read",
+                                  middleText: "Apakah anda akan menghapus ?",
+                                  actions: [
+                                    OutlinedButton(
+                                      onPressed: () => Get.back(),
+                                      child: Text("Cancel"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        c.deleteLastRead(lastRead["id"]);
+                                      },
+                                      child: Text("Delete"),
+                                    ),
+                                  ]);
+                            }
+                          },
+                          onTap: () {
+                            if (lastRead != null) {
+                              // Get.toNamed(Routes.LAST_READ);
+                            }
+                          },
+                          child: Container(
+                            width: Get.width,
+                            child: Stack(
                               children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.menu_book_rounded,
-                                      color: appWhite1,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Terakhir di baca",
-                                      style: TextStyle(color: appWhite1),
-                                    )
-                                  ],
+                                Positioned(
+                                  bottom: -50,
+                                  right: 0,
+                                  child: Opacity(
+                                    opacity: 0.8,
+                                    child: Container(
+                                        width: 160,
+                                        height: 160,
+                                        child: Image.asset(
+                                            "assets/image/alquran.png")),
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 25,
-                                ),
-                                Text(
-                                  "Al-Fatihah",
-                                  style: TextStyle(
-                                      color: appWhite1,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "Juz 1 | Ayat 5",
-                                  style: TextStyle(
-                                      color: appWhite1,
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 16),
+                                Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.menu_book_rounded,
+                                            color: appWhite1,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            "Terakhir di baca",
+                                            style: TextStyle(color: appWhite1),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      Text(
+                                        lastRead == null
+                                            ? "Belum ada"
+                                            : "${lastRead["surah"].toString().replaceAll("@", "'")}",
+                                        style: TextStyle(
+                                            color: appWhite1,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        lastRead == null
+                                            ? "-"
+                                            : "Juz ${lastRead["juz"]} | Ayat ${lastRead["ayat"]}",
+                                        style: TextStyle(
+                                            color: appWhite1,
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 16),
+                                      )
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
-                          )
-                        ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
               SizedBox(
