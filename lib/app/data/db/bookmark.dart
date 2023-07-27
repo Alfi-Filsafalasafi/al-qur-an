@@ -26,16 +26,17 @@ class DatabaseManager {
     return await openDatabase(path, version: 1,
         onCreate: (database, version) async {
       return await database.execute('''
-CREATE TABLE BOOKMARK (
-  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  surah TEXT NOT NULL,
-  ayat INTEGER NOT NULL,
-  juz INTEGER NOT NULL,
-  via TEXT NOT NULL,
-  index_ayat INTEGER NOT NULL,
-  last_read INTEGER DEFAULT 0
-)
-''');
+        CREATE TABLE BOOKMARK (
+          id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+          surah TEXT NOT NULL,
+          number_surah INTEGER NOT NULL,
+          ayat INTEGER NOT NULL,
+          juz INTEGER NOT NULL,
+          via TEXT NOT NULL,
+          index_ayat INTEGER NOT NULL,
+          last_read INTEGER DEFAULT 0
+        )
+        ''');
     });
   }
 

@@ -8,9 +8,11 @@ import 'package:get/get.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DetailSurahController extends GetxController {
+  AutoScrollController scrollC = AutoScrollController();
   final player = AudioPlayer();
 
   Verse? lastVerse;
@@ -27,8 +29,17 @@ class DetailSurahController extends GetxController {
       await db.delete("bookmark", where: "last_read = 1");
     } else {
       List checkData = await db.query("bookmark",
+          columns: [
+            "surah",
+            "number_surah",
+            "ayat",
+            "juz",
+            "via",
+            "index_ayat",
+            "last_read",
+          ],
           where:
-              "surah = '${surah.name.transliteration.id.replaceAll("'", "@")}' and ayat = ${ayat.number.inSurah} and juz = ${ayat.meta.juz} and via = 'surah' and index_ayat = $indexAyat and last_read = 0 ");
+              "surah = '${surah.name.transliteration.id.replaceAll("'", "@")}' and number_surah = ${surah.number} and ayat = ${ayat.number.inSurah} and juz = ${ayat.meta.juz} and via = 'surah' and index_ayat = $indexAyat and last_read = 0 ");
       if (checkData.length != 0) {
         flagExist = true;
       }
@@ -38,6 +49,7 @@ class DetailSurahController extends GetxController {
       await db.insert("bookmark", {
         "surah": "${surah.name.transliteration.id.replaceAll("'", "@")}",
         "ayat": ayat.number.inSurah,
+        "number_surah": surah.number,
         "juz": ayat.meta.juz,
         "via": "surah",
         "index_ayat": indexAyat,

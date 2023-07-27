@@ -161,6 +161,23 @@ class HomeView extends GetView<HomeController> {
                           },
                           onTap: () {
                             if (lastRead != null) {
+                              switch (lastRead["via"]) {
+                                case "juz":
+                                  Map<String, dynamic> dataMapPerJuz =
+                                      controller.allJuz[lastRead["juz"] - 1];
+                                  Get.toNamed(Routes.DETAIL_JUZ, arguments: {
+                                    "juz": dataMapPerJuz,
+                                    "bookmark": lastRead
+                                  });
+                                default:
+                                  Get.toNamed(Routes.DETAIL_SURAH, arguments: {
+                                    "name": lastRead["surah"]
+                                        .toString()
+                                        .replaceAll("@", "'"),
+                                    "number": lastRead["number_surah"],
+                                    "bookmark": lastRead,
+                                  });
+                              }
                               // Get.toNamed(Routes.LAST_READ);
                             }
                           },
@@ -270,7 +287,10 @@ class HomeView extends GetView<HomeController> {
                               Surah surah = snapshot.data![index];
                               return ListTile(
                                 onTap: () => Get.toNamed(Routes.DETAIL_SURAH,
-                                    arguments: surah),
+                                    arguments: {
+                                      "name": surah.name.transliteration.id,
+                                      "number": surah.number,
+                                    }),
                                 leading: Container(
                                   width: 40,
                                   height: 40,
@@ -315,6 +335,7 @@ class HomeView extends GetView<HomeController> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
+                            controller.dataAllJuz.value = false;
                             return Center(
                               child: CircularProgressIndicator(),
                             );
@@ -324,6 +345,9 @@ class HomeView extends GetView<HomeController> {
                               child: Text("Tidak ada data"),
                             );
                           }
+
+                          controller.dataAllJuz.value = true;
+
                           return ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
@@ -331,7 +355,7 @@ class HomeView extends GetView<HomeController> {
                                   snapshot.data![index];
                               return ListTile(
                                 onTap: () => Get.toNamed(Routes.DETAIL_JUZ,
-                                    arguments: dataMapPerJuz),
+                                    arguments: {"juz": dataMapPerJuz}),
                                 leading: Container(
                                   width: 40,
                                   height: 40,
@@ -430,72 +454,107 @@ class HomeView extends GetView<HomeController> {
                     //merupakan page ketiga
                     GetBuilder<HomeController>(
                       builder: (c) {
-                        return FutureBuilder<List<Map<String, dynamic>>>(
-                          future: c.getBookmark(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-
-                            if (snapshot.data!.length == 0) {
-                              return Center(
-                                child: Text("Bookmark belum ada"),
-                              );
-                            }
-
-                            return ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                Map<String, dynamic> data =
-                                    snapshot.data![index];
-                                return ListTile(
-                                  onTap: () {
-                                    print(index);
-                                  },
-                                  leading: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/icon/listnumber.png"),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "${index + 1}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    "${data["surah"].toString().replaceAll("@", "'")}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w500),
-                                  ),
-                                  subtitle: Text(
-                                    "Ayat ${data['ayat']} | via ${data['via']}",
-                                    style: TextStyle(
-                                        color: appWhite2,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  trailing: IconButton(
-                                      onPressed: () {
-                                        c.deleteBookmark(data["id"]);
-                                      },
-                                      icon: Icon(
-                                        Icons.delete,
-                                        color: appPurple,
-                                      )),
+                        if (c.dataAllJuz.isFalse) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(),
+                                SizedBox(height: 20),
+                                Text("Menunggu data di juz ..."),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return FutureBuilder<List<Map<String, dynamic>>>(
+                            future: c.getBookmark(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
                                 );
-                              },
-                            );
-                          },
-                        );
+                              }
+
+                              if (snapshot.data!.length == 0) {
+                                return Center(
+                                  child: Text("Bookmark belum ada"),
+                                );
+                              }
+
+                              return ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  Map<String, dynamic> data =
+                                      snapshot.data![index];
+                                  return ListTile(
+                                    onTap: () {
+                                      switch (data["via"]) {
+                                        case "juz":
+                                          print("Go to Detail Juz");
+                                          print(data);
+                                          Map<String, dynamic> dataMapPerJuz =
+                                              controller
+                                                  .allJuz[data["juz"] - 1];
+                                          Get.toNamed(Routes.DETAIL_JUZ,
+                                              arguments: {
+                                                "juz": dataMapPerJuz,
+                                                "bookmark": data
+                                              });
+                                        default:
+                                          Get.toNamed(Routes.DETAIL_SURAH,
+                                              arguments: {
+                                                "name": data["surah"]
+                                                    .toString()
+                                                    .replaceAll("@", "'"),
+                                                "number": data["number_surah"],
+                                                "bookmark": data,
+                                              });
+                                      }
+                                    },
+                                    leading: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              "assets/icon/listnumber.png"),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "${index + 1}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      "${data["surah"].toString().replaceAll("@", "'")}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    subtitle: Text(
+                                      "Ayat ${data['ayat']} | via ${data['via']}",
+                                      style: TextStyle(
+                                          color: appWhite2,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    trailing: IconButton(
+                                        onPressed: () {
+                                          c.deleteBookmark(data["id"]);
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: appPurple,
+                                        )),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        }
                       },
                     )
                   ],

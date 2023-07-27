@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../data/db/bookmark.dart';
 import '../../../data/models/detailSurah.dart';
 
 class DetailJuzController extends GetxController {
+  AutoScrollController scrollC = AutoScrollController();
   final player = AudioPlayer();
 
   Verse? lastVerse;
@@ -23,7 +25,7 @@ class DetailJuzController extends GetxController {
     } else {
       List checkData = await db.query("bookmark",
           where:
-              "surah = '${surah.name.transliteration.id.replaceAll("'", "@")}' and ayat = ${ayat.number.inSurah} and juz = ${ayat.meta.juz} and via = 'juz' and index_ayat = $indexAyat and last_read = 0 ");
+              "surah = '${surah.name.transliteration.id.replaceAll("'", "@")}' and number_surah = ${surah.number} and ayat = ${ayat.number.inSurah} and juz = ${ayat.meta.juz} and via = 'juz' and index_ayat = $indexAyat and last_read = 0 ");
       if (checkData.length != 0) {
         flagExist = true;
       }
@@ -33,6 +35,7 @@ class DetailJuzController extends GetxController {
       await db.insert("bookmark", {
         "surah": "${surah.name.transliteration.id.replaceAll("'", "@")}",
         "ayat": ayat.number.inSurah,
+        "number_surah": surah.number,
         "juz": ayat.meta.juz,
         "via": "juz",
         "index_ayat": indexAyat,

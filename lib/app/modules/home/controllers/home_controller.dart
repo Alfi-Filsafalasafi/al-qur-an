@@ -14,6 +14,8 @@ import '../../../constant/color.dart';
 
 class HomeController extends GetxController {
   List<Surah> allSurah = [];
+  List<Map<String, dynamic>> allJuz = [];
+  RxBool dataAllJuz = false.obs;
 
   DatabaseManager database = DatabaseManager.instance;
 
@@ -46,8 +48,10 @@ class HomeController extends GetxController {
 
   Future<List<Map<String, dynamic>>> getBookmark() async {
     Database db = await database.db;
-    List<Map<String, dynamic>> allBookmark =
-        await db.query("bookmark", where: "last_read = 0");
+    List<Map<String, dynamic>> allBookmark = await db.query(
+      "bookmark",
+      where: "last_read = 0",
+    );
     // print(allBookmark);
     return allBookmark;
   }
@@ -108,7 +112,6 @@ class HomeController extends GetxController {
     int juz = 1;
 
     List<Map<String, dynamic>> penampungAyat = [];
-    List<Map<String, dynamic>> allJuz = [];
 
     for (var i = 1; i <= 10; i++) {
       // Omit the 'new' keyword when instantiating HttpClient
